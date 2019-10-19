@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 /**
  * 多数据源，切面处理类
  * 
- * @author gaofz
+ * @author GFuZan
  *
  */
 @Aspect

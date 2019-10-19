@@ -1,3 +1,4 @@
+# 配置参考: ServerProperties.class
 server:
     tomcat:
         uri-encoding: UTF-8
@@ -12,6 +13,7 @@ spring:
     # 环境 dev|prod
     profiles:
         active: dev
+    # 配置参考: WebMvcProperties.class
     mvc:
         throw-exception-if-no-handler-found: true
         static-path-pattern: /static/**
@@ -20,13 +22,13 @@ spring:
     resources:
         static-locations: classpath:static/
 
-# thymeleaf模板
+    # 配置参考: ThymeleafProperties.class
     thymeleaf:
        prefix: classpath:templates/
        suffix: .html
        encoding: UTF-8
 
-#  国际化
+    # 配置参考: MessageSourceProperties.class
     messages:
        # language文件夹下以messages开头的properties文件
        basename: language/messages
@@ -34,7 +36,7 @@ spring:
        # 回滚到系统语言
        fallbackToSystemLocale: false
 
-# mybatis
+# 配置参考: MybatisProperties.class
 mybatis:
    mapper-locations: classpath:mapper/**/*.xml
 

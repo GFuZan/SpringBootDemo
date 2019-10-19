@@ -6,7 +6,7 @@ import org.gfuzan.datasources.DataSourceName;
 
 /**
  * 多数据源注解
- * @author gaofz
+ * @author GFuZan
  *
  */
 @Target(ElementType.METHOD)

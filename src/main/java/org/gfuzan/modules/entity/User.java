@@ -1,7 +1,14 @@
 package org.gfuzan.modules.entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -5362158762069971405L;
+
 	private Integer id;
 	
     private String name;

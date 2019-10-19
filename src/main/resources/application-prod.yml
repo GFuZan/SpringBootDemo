@@ -1,5 +1,6 @@
 spring:
     datasource:
+        # 配置参考: HikariDataSource.class
         first:   #数据源1
             driverClassName: com.mysql.cj.jdbc.Driver
             jdbc-url: jdbc:mysql://localhost:3306/demo1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
@@ -22,3 +23,14 @@ spring:
             maxIdle: 20
             min-idle: 1
             max-wait: 60000
+
+    # 配置参考: CacheProperties.calss
+    cache:
+        type: redis
+
+    # 配置参考: RedisProperties.class
+    redis:
+        database: 0
+        host: localhost
+        port: 6379
+        password: root

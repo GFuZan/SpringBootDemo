@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 異常コントローラ
+ * 异常处理Controller
  * @author gaofz
  *
  */
 @Controller
-@ConditionalOnBean(value=ServerProperties.class)
+@ConditionalOnWebApplication
 public class ExceptionController extends BasicErrorController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());

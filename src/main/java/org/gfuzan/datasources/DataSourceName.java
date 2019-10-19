@@ -1,8 +1,8 @@
 package org.gfuzan.datasources;
 
 /**
- * 多数据源
- * @author gaofz
+ * 多数据源名
+ * @author GFuZan
  *
  */
 public enum DataSourceName {

@@ -15,7 +15,7 @@ import com.zaxxer.hikari.HikariDataSource;
 /**
  * 配置多数据源
  * 
- * @author gaofz
+ * @author GFuZan
  *
  */
 @Configuration

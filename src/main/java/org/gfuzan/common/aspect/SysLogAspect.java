@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+
 /**
- * @author gaofz
+ * 方法执行log
+ * @author GFuZan
  *
  */
 @Aspect
