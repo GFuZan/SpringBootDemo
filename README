@@ -1,0 +1,13 @@
+支持动态数据源
+
+运行
+    linux:
+        nohup java -jar [路径]/[文件].jar --spring.profiles.active=prod
+    windows:
+        java -jar [路径]\[文件].jar --spring.profiles.active=prod
+    备注:
+        配置文件放在执行此命令的文件夹下的config文件夹中
+        例: 
+            在文件夹home下执行
+                nohup java -jar home/user/demo.jar --spring.profiles.active=prod
+            需要将配置文件放在home/config中,而不是home/user/config.
