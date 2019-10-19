@@ -1,4 +1,4 @@
-支持动态数据源
+集成 mybatis,thymeleaf,国际化,支持动态数据源
 
 运行
     linux:
