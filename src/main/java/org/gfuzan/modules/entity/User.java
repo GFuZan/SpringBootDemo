@@ -2,6 +2,10 @@ package org.gfuzan.modules.entity;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class User implements Serializable {
 	
 	/**
@@ -9,10 +13,14 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = -5362158762069971405L;
 
+	@Max(value=100,message="id 验证失败")
 	private Integer id;
 	
+	@NotNull(message="name 不能为空")
     private String name;
 
+	@Max(value=170,message="年龄验证失败")
+	@Min(value=0,message="年龄验证失败")
 	private Integer age;
     
     public User() {
