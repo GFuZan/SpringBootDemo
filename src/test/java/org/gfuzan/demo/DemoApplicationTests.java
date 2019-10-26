@@ -39,6 +39,30 @@ public class DemoApplicationTests {
 		// 数据源2
 		us.getAllUser2();
 	}
+	
+	/**
+	 * 事务测试
+	 */
+	@Test
+	public void Test011() {
+		// 数据源
+		try {
+			us.updateUserT();
+		}catch (Exception e) {
+		}
+		// 数据源1
+		try {
+			us.updateUserT1();
+		}catch (Exception e) {
+		}
+		// 数据源2
+		try {
+			us.updateUserT2();
+		}catch (Exception e) {
+		}
+		
+		System.out.println();
+	}
 
 	@Autowired
 	private MessageSource messageSource;

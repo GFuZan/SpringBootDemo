@@ -101,7 +101,8 @@
     <springProfile name="dev">
         <logger name="org.springframework" level="WARN"/>
         <logger name="org.springboot.sample" level="WARN" />
-        <logger name="com.zaxxer.hikari" level="WARN" />
+        <logger name="org.springframework.jdbc.datasource" level="DEBUG" />
+        
 
         <root level="DEBUG">
             <appender-ref ref="STDOUT" />

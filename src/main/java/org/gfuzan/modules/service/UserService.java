@@ -8,9 +8,15 @@ public interface UserService {
 
     public List<User> getAllUser();
     
-    public int updateUser();
-	
     public List<User> getAllUser1();
-
+    
     public List<User> getAllUser2();
+    
+    public int updateUser();
+    
+    public int updateUserT();
+    
+    public int updateUserT1();
+    
+    public int updateUserT2();
 }

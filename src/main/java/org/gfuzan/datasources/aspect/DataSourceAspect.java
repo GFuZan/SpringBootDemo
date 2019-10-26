@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Aspect
+// 保证在事务处理之前切换数据源
 @Order(-1)
 @Component
 public class DataSourceAspect {

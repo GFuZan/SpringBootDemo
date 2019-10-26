@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,5 +41,29 @@ public class UserServiceImpl implements UserService {
 	public int updateUser() {
 		System.err.println("updateUser");
 		return um.updateUser();
+	}
+	
+	
+
+	@Transactional(rollbackFor=Exception.class)
+	public int updateUserT() {
+		um.updateUser();
+		throw new NullPointerException();
+	}
+	
+	@Override
+	@DataSource(DataSourceName.FIRST)
+	@Transactional(rollbackFor=Exception.class)
+	public int updateUserT1() {
+		um.updateUser();
+		throw new NullPointerException();
+	}
+	
+	@Override
+	@DataSource(DataSourceName.SECOND)
+	@Transactional(rollbackFor=Exception.class)
+	public int updateUserT2() {
+		um.updateUser();
+		throw new NullPointerException();
 	}
 }
