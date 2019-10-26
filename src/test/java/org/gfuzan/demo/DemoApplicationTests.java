@@ -38,6 +38,11 @@ public class DemoApplicationTests {
 		us.getAllUser1();
 		// 数据源2
 		us.getAllUser2();
+		
+		// 内部调用
+		us.getAllUserAll();
+		
+		System.out.println();
 	}
 	
 	/**

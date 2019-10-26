@@ -19,4 +19,6 @@ public interface UserService {
     public int updateUserT1();
     
     public int updateUserT2();
+
+	List<User> getAllUserAll();
 }

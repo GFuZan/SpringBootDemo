@@ -1,0 +1,13 @@
+# 由于Key 不能包含特殊字符,使用下面配置方式,mapping的key与allowedOrigins的key要对应
+
+cors:
+   allow-rule:
+      mapping: 
+         admin: '/admin/**'
+         api: '/api/**'
+      allowed-origins:
+         admin:
+            - 'http://localhost:9000'
+            - 'http://localhost:9001'
+         api:
+            - '*'

@@ -1,5 +1,6 @@
 package org.gfuzan.modules.service.impl;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.gfuzan.datasources.DataSourceName;
@@ -10,6 +11,7 @@ import org.gfuzan.modules.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,19 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper um;
 
+	@Override
+	@DataSource(DataSourceName.FIRST)
+	public List<User> getAllUserAll() {
+		
+		getAllUser1();
+		getAllUser2();
+		getAllUser2();
+		getAllUser1();
+		
+		return um.getAllUser();
+	}
+
+	@Override
 	@DataSource(DataSourceName.FIRST)
 	public List<User> getAllUser1() {
 		return um.getAllUser();
@@ -65,5 +80,10 @@ public class UserServiceImpl implements UserService {
 	public int updateUserT2() {
 		um.updateUser();
 		throw new NullPointerException();
+	}
+	
+	@Scheduled(initialDelay=0,fixedRate=4000)
+	public void scheduledTest() {
+		System.out.println("执行定时任务, 执行时间:"+ LocalTime.now());
 	}
 }

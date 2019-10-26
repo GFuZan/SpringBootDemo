@@ -2,9 +2,12 @@ package org.gfuzan.datasources;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,22 +24,30 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 public class DynamicDataSourceConfig {
 	
-	
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	/**
 	 * 创建数据源配置bean
 	 * 
 	 * @return
 	 */
 	@Bean("dataSourceMap")
-	@ConfigurationProperties(prefix="spring.datasource",ignoreInvalidFields=true)
+	@ConfigurationProperties(prefix = "spring.datasource", ignoreInvalidFields = true)
 	public Map<String, HikariDataSource> createDataSourceConfig() {
 		return new HashMap<>();
 	}
 
 	@Bean
 	@Primary
-	public DynamicDataSource dataSource(Map<String,? extends DataSource> dataSourceMap) {
+	public DynamicDataSource dataSource(Map<String, ? extends DataSource> dataSourceMap) {
 
+		if(!dataSourceMap.isEmpty()) {
+			Set<String> keySet = dataSourceMap.keySet();
+			keySet.forEach((key)->{
+				logger.debug("找到数据源: "+ key);
+			});
+		}
+		
 		// 找到默认数据源
 		DataSource defaultDataSource = dataSourceMap.get(DataSourceName.getDefaultDataSourceName().getName());
 
