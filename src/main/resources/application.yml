@@ -38,7 +38,23 @@ spring:
 
 # 配置参考: MybatisProperties.class
 mybatis:
+   # xml扫描路径
    mapper-locations: classpath:mapper/**/*.xml
+   # 高级配置
+   configuration:
+      # 缓存
+      cache-enabled: false
+      # 下划线转驼峰
+      map-underscore-to-camel-case: true
+
+# 配置参照: PageHelperProperties.class
+pagehelper:
+   # pageSize =0 时,不分页
+   page-size-zero: true
+   # 参数合理化(pageNum<1会查询第一页,pageNum>pages会查询最后一页)
+   reasonable: true
+   # 使用RowBounds分页进行count查询
+   row-bounds-with-count: false
 
 # log
 logging:

@@ -15,6 +15,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
@@ -85,5 +88,13 @@ public class UserServiceImpl implements UserService {
 	@Scheduled(initialDelay=0,fixedRate=4000)
 	public void scheduledTest() {
 		System.out.println("执行定时任务, 执行时间:"+ LocalTime.now());
+	}
+	
+	@Override
+	@DataSource(DataSourceName.SECOND)
+	public List<User> getAllUserPage(int pageNum) {
+		PageHelper.startPage(pageNum, 1);
+		List<User> allUser = um.getAllUser();
+		return allUser;
 	}
 }

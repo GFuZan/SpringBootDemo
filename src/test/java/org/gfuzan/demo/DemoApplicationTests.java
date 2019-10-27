@@ -73,6 +73,23 @@ public class DemoApplicationTests {
 		
 		System.out.println();
 	}
+	
+	
+	/**
+	 * 分页测试
+	 */
+	@Test
+	public void Test012() {
+		List<User> allUserPage = us.getAllUserPage(-1);
+		
+		allUserPage = us.getAllUserPage(1);
+		
+		allUserPage = us.getAllUserPage(2);
+		
+		allUserPage = us.getAllUserPage(100);
+		
+		System.out.println(allUserPage);
+	}
 
 	@Autowired
 	RedisTemplate<Object,Object> rt;

@@ -21,4 +21,6 @@ public interface UserService {
     public int updateUserT2();
 
 	List<User> getAllUserAll();
+
+	List<User> getAllUserPage(int pageNum);
 }

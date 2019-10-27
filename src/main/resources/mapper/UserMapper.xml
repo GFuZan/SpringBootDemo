@@ -7,7 +7,7 @@
     </resultMap>
 
     <select id="getAllUser" resultMap="userMap">
-        select * from user;
+        select * from user
     </select>
     
     <update id="updateUser">
