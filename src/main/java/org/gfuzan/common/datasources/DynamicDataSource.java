@@ -1,4 +1,4 @@
-package org.gfuzan.datasources;
+package org.gfuzan.common.datasources;
 
 import java.util.Deque;
 import java.util.LinkedList;

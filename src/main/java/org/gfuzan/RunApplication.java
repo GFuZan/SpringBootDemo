@@ -1,5 +1,9 @@
 package org.gfuzan;
 
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import org.gfuzan.common.classloader.CustomClassLoader;
 import org.gfuzan.common.utils.CustomPropertySourceFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,5 +29,19 @@ public class RunApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(RunApplication.class);
+	}
+	
+	
+	/**
+	 * 设置自定义类加载器
+	 */
+	static{
+		CustomClassLoader customClassLoader = new CustomClassLoader();
+		URLClassLoader classLoader = (URLClassLoader) RunApplication.class.getClassLoader();
+		URL[] urLs = classLoader.getURLs();
+		for(URL url : urLs) {
+			customClassLoader.addURL(url);
+		}
+		Thread.currentThread().setContextClassLoader(customClassLoader);
 	}
 }

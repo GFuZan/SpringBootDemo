@@ -4,10 +4,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class MyClassLoader extends URLClassLoader{
+
+public class CustomClassLoader extends URLClassLoader{
 	
-	public MyClassLoader(){
+	private static final Logger logger = LoggerFactory.getLogger(CustomClassLoader.class);
+	
+	public CustomClassLoader(){
 		super(new URL[0]);
 	}
 	
@@ -21,12 +26,12 @@ public class MyClassLoader extends URLClassLoader{
 	
 	@Override
 	public void addURL(URL url) {
-		System.err.println(url);
+		logger.trace("Load "+url);
         super.addURL(url);
     }
 	@Override
 	public Class<?> findClass(final String name)throws ClassNotFoundException{
-		System.err.println("Load Class: "+name);
+		logger.trace("Load Class: "+name);
 		return super.findClass(name);
 	}
     

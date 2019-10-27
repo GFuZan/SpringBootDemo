@@ -1,8 +1,8 @@
-package org.gfuzan.datasources.annotation;
+package org.gfuzan.common.datasources.annotation;
 
 import java.lang.annotation.*;
 
-import org.gfuzan.datasources.DataSourceName;
+import org.gfuzan.common.datasources.DataSourceName;
 
 /**
  * 多数据源注解
