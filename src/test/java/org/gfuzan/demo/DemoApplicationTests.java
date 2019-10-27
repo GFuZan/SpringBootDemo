@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.gfuzan.RunApplication;
 import org.gfuzan.modules.entity.User;
@@ -11,9 +12,13 @@ import org.gfuzan.modules.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.MessageSource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -67,6 +72,45 @@ public class DemoApplicationTests {
 		}
 		
 		System.out.println();
+	}
+
+	@Autowired
+	RedisTemplate<Object,Object> rt;
+	
+	@Autowired
+	StringRedisTemplate srt;
+
+	/**
+	 * Redis测试
+	 */
+	@Test
+	public void redisTest() {
+		Boolean delete = rt.delete("testKey");
+		System.out.println("删除成功: "+ delete);
+		
+		final String testSetKey = "testSetKey";
+		
+		final String testHashKey = "testHashKey";
+		
+		final String testListKey = "testListKey";
+		
+		final String testValueKey = "testValueKey";
+		
+		
+		// set测试
+		{
+			SetOperations opsForSet = rt.opsForSet();
+			// 添加元素
+			Long add = opsForSet.add(testSetKey, new User("张三"),new User("李四"),new User("王五"));
+			//设置有效期
+			rt.expire(testSetKey, 30, TimeUnit.MINUTES);
+			// 随机读取一个
+			User randomMember = (User) opsForSet.randomMember(testSetKey);
+			// 读取所有
+			List<User> randomMembers = opsForSet.randomMembers(testSetKey, opsForSet.size(testSetKey));
+		}
+		
+		
 	}
 
 	@Autowired
