@@ -51,6 +51,24 @@ public class DemoApplicationTests {
 	}
 	
 	/**
+	 * mybatis 缓存测试
+	 */
+	@Test
+	public void Test0101() {
+		// 数据源2
+		us.getAllUser2();
+		// 数据源2
+		us.getAllUser2();
+		// 数据源2
+		us.getAllUser2();
+		// 数据源2
+		us.getAllUser2();
+		// 数据源2
+		us.getAllUser2();
+		System.out.println();
+	}
+	
+	/**
 	 * 事务测试
 	 */
 	@Test

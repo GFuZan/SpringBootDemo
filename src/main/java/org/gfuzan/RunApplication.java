@@ -11,14 +11,21 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
+// 启用缓存
 @EnableCaching
+// 启用事务
 @EnableTransactionManagement
+// 启用定时任务
 @EnableScheduling
+// 启用深度代理
+@EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
+// 加载外部配置
 @PropertySource(value = { "${location.datasource:}","${location.cache:}","${location.cors:}" }, factory = CustomPropertySourceFactory.class, ignoreResourceNotFound = true)
 public class RunApplication extends SpringBootServletInitializer {
 

@@ -8,6 +8,7 @@ import org.gfuzan.common.datasources.annotation.DataSource;
 import org.gfuzan.modules.entity.User;
 import org.gfuzan.modules.mapper.UserMapper;
 import org.gfuzan.modules.service.UserService;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,10 +27,10 @@ public class UserServiceImpl implements UserService {
 	@DataSource(DataSourceName.FIRST)
 	public List<User> getAllUserAll() {
 		
-		getAllUser1();
-		getAllUser2();
-		getAllUser2();
-		getAllUser1();
+		((UserService)AopContext.currentProxy()).getAllUser1();
+		((UserService)AopContext.currentProxy()).getAllUser2();
+		((UserService)AopContext.currentProxy()).getAllUser2();
+		((UserService)AopContext.currentProxy()).getAllUser1();
 		
 		return um.getAllUser();
 	}

@@ -42,6 +42,8 @@ mybatis:
    mapper-locations: classpath:mapper/**/*.xml
    # 高级配置
    configuration:
+      # 使用REUSE执行器,缓存sql编译后的statement
+      default-executor-type: REUSE
       # 缓存
       cache-enabled: false
       # 下划线转驼峰
