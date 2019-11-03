@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -38,13 +37,12 @@ public class DynamicDataSourceConfig {
 	}
 
 	@Bean
-	@Primary
-	public DynamicDataSource dataSource(Map<String, ? extends DataSource> dataSourceMap) {
+	public DataSource dataSource(Map<String, ? extends DataSource> dataSourceMap) {
 
 		if(!dataSourceMap.isEmpty()) {
 			Set<String> keySet = dataSourceMap.keySet();
 			keySet.forEach((key)->{
-				logger.debug("找到数据源: "+ key);
+				logger.debug("找到数据源配置: "+ key);
 			});
 		}
 		

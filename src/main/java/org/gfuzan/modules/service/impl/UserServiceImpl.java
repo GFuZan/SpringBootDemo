@@ -85,7 +85,10 @@ public class UserServiceImpl implements UserService {
 		throw new NullPointerException();
 	}
 	
-	@Scheduled(initialDelay=0,fixedRate=4000)
+	/**
+	 * 40秒执行一次
+	 */
+	@Scheduled(initialDelay=0,fixedRate=40000)
 	public void scheduledTest() {
 		System.out.println("执行定时任务, 执行时间:"+ LocalTime.now());
 	}
