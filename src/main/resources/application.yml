@@ -69,7 +69,11 @@ logging:
 location:
    # 数据源
    datasource: classpath:config/datasource-${spring.profiles.active}.yml
+   # Redis
+   redis: classpath:config/redis-${spring.profiles.active}.yml
    # 缓存
    cache: classpath:config/cache-${spring.profiles.active}.yml
+   # Session
+   session: classpath:config/session-${spring.profiles.active}.yml
    # 跨域配置
    cors: classpath:config/cors-${spring.profiles.active}.yml

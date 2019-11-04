@@ -1,0 +1,6 @@
+# 配置参考 SessionProperties.class
+spring:
+   session:
+      # 未指定单位,默认为秒  可指定单位值(不区分大小写): 天 D,小时 H,分钟 M, 秒 S
+      timeout: 30m
+      store-type: none

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 @Controller
 @RequestMapping("testController")
@@ -91,7 +93,24 @@ public class TestController {
 				sb.append(oe.getDefaultMessage()).append('\n');
 			}
 		}
-
 		return sb.toString();
+	}
+	
+	
+
+	/**
+	 * 测试Session
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping(path = { "testSession" }, method = RequestMethod.POST)
+	@ResponseBody
+	public Object testSession(@RequestBody String param) {
+		
+		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+		
+		requestAttributes.setAttribute("param", param, RequestAttributes.SCOPE_SESSION);
+		
+		return requestAttributes.getAttribute("param", RequestAttributes.SCOPE_SESSION);
 	}
 }

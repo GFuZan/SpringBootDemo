@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { RunApplication.class },webEnvironment=WebEnvironment.NONE)
+@SpringBootTest(classes = { RunApplication.class },webEnvironment=WebEnvironment.RANDOM_PORT)
 public class DemoApplicationTests {
 
 	@Autowired
@@ -35,7 +35,7 @@ public class DemoApplicationTests {
 	 * 多数据源测试
 	 */
 	@Test
-	public void Test01() {
+	public void testDataSource() {
 		// 数据源
 		us.getAllUser();
 		// 数据源1
@@ -53,7 +53,7 @@ public class DemoApplicationTests {
 	 * mybatis 缓存测试
 	 */
 	@Test
-	public void Test0101() {
+	public void testMybatisCache() {
 		// 数据源2
 		us.getAllUser2();
 		// 数据源2
@@ -71,7 +71,7 @@ public class DemoApplicationTests {
 	 * 事务测试
 	 */
 	@Test
-	public void Test011() {
+	public void testTransactional() {
 		// 数据源
 		try {
 			us.updateUserT();
@@ -91,12 +91,11 @@ public class DemoApplicationTests {
 		System.out.println();
 	}
 	
-	
 	/**
 	 * 分页测试
 	 */
 	@Test
-	public void Test012() {
+	public void testPage() {
 		List<User> allUserPage = us.getAllUserPage(-1);
 		
 		allUserPage = us.getAllUserPage(1);
@@ -154,7 +153,7 @@ public class DemoApplicationTests {
 	 * 多语言测试
 	 */
 	@Test
-	public void Test02() {
+	public void testLanguage() {
 		System.out.println(messageSource.getMessage("welcome", null, Locale.CHINA));
 		System.out.println(messageSource.getMessage("welcome", null, Locale.ENGLISH));
 	}
@@ -165,7 +164,7 @@ public class DemoApplicationTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void Test03() throws IOException {
+	public void testJson() throws IOException {
 		ObjectMapper om = new ObjectMapper();
 		List<User> userList = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {

@@ -1,0 +1,7 @@
+spring:
+    # 配置参考: RedisProperties.class
+    redis:
+        database: 0
+        host: localhost
+        port: 6379
+        password: root
