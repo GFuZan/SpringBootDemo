@@ -7,7 +7,7 @@ server:
     port: 8080
     connection-timeout: 5000ms
     servlet:
-      context-path: /demo
+      context-path: /
 
 spring:
     # 环境 dev|prod
@@ -15,8 +15,10 @@ spring:
         active: dev
     # 配置参考: WebMvcProperties.class
     mvc:
-        throw-exception-if-no-handler-found: true
-        static-path-pattern: /static/**
+       servlet:
+          path: /demo
+       throw-exception-if-no-handler-found: true
+       static-path-pattern: /static/**
 
 # 静态资源路径
     resources:
@@ -62,7 +64,6 @@ pagehelper:
 logging:
    config: classpath:logback-spring.xml
    path: ./logs
-
 
 # 外部配置文件
 location:
