@@ -19,6 +19,8 @@
 		<java.version>1.8</java.version>
 		<mybatis.version>2.1.1</mybatis.version>
 		<pagehelper.version>1.2.12</pagehelper.version>
+		<!-- 解决报unknow错误 -->
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -26,11 +28,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<!-- Spring Security -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<!-- thymeleaf模板支持 -->
 		<dependency>
@@ -52,6 +49,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+		<!-- 基于Redis的Spring Session -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
 		<!-- Mybatis集成 -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -64,7 +66,6 @@
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
 			<version>${pagehelper.version}</version>
 		</dependency>
-
 		<!-- mysql驱动 -->
 		<dependency>
 			<groupId>mysql</groupId>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * 自定义Request,让Json数据可以读多次
@@ -27,7 +28,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
 
-		if (this.getContentType().toLowerCase().indexOf("json") >= 0) {
+		if (StringUtils.hasLength(this.getContentType()) && this.getContentType().toLowerCase().indexOf("json") >= 0) {
 			if (postBody == null) {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				IOUtils.copy(super.getInputStream(), bos);

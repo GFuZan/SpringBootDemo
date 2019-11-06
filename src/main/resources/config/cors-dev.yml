@@ -3,11 +3,7 @@
 cors:
    allow-rule:
       mapping: 
-         admin: '/admin/**'
-         api: '/api/**'
+         ant-url: '/**'
       allowed-origins:
-         admin:
-            - 'http://localhost:9000'
-            - 'http://localhost:9001'
-         api:
+         ant-url:
             - '*'
