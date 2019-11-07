@@ -6,12 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("security")
 public class SecurityController {
 
 	@RequestMapping("login")
 	public String login(Model model) {
 		return "login";
 	}
+	
+	   @RequestMapping("index")
+	    public @ResponseBody String index() {
+	        return "index";
+	    }
 
 	/**
 	 * 管理员页面
