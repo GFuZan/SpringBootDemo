@@ -3,8 +3,8 @@ package org.gfuzan.modules.service.impl;
 import java.time.LocalTime;
 import java.util.List;
 
-import org.gfuzan.common.datasources.DataSourceName;
-import org.gfuzan.common.datasources.annotation.DataSource;
+import org.gfuzan.common.config.datasources.DataSourceName;
+import org.gfuzan.common.config.datasources.annotation.DataSource;
 import org.gfuzan.modules.entity.User;
 import org.gfuzan.modules.mapper.UserMapper;
 import org.gfuzan.modules.service.UserService;

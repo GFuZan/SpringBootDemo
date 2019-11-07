@@ -1,4 +1,4 @@
-package org.gfuzan.common.datasources.aspect;
+package org.gfuzan.common.config.datasources.aspect;
 
 import java.lang.reflect.Method;
 
@@ -7,9 +7,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.gfuzan.common.datasources.DataSourceName;
-import org.gfuzan.common.datasources.DynamicDataSource;
-import org.gfuzan.common.datasources.annotation.DataSource;
+import org.gfuzan.common.config.datasources.DataSourceName;
+import org.gfuzan.common.config.datasources.DynamicDataSource;
+import org.gfuzan.common.config.datasources.annotation.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 public class DataSourceAspect {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private static final String dataSourceAnnotationClassName = "org.gfuzan.common.datasources.annotation.DataSource";
+	private static final String dataSourceAnnotationClassName = "org.gfuzan.common.config.datasources.annotation.DataSource";
 
 	@Pointcut("@annotation("+dataSourceAnnotationClassName+")")
 	public void dataSourcePointCut() {

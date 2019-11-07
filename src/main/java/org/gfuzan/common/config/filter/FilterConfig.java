@@ -1,6 +1,6 @@
-package org.gfuzan.common.config;
+package org.gfuzan.common.config.filter;
 
-import org.gfuzan.common.filter.RequestWrapperFilter;
+import org.gfuzan.common.config.filter.requestwrapper.RequestWrapperFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

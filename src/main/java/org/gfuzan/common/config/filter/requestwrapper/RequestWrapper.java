@@ -1,4 +1,4 @@
-package org.gfuzan.common.filter;
+package org.gfuzan.common.config.filter.requestwrapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
