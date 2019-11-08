@@ -1,4 +1,4 @@
-package org.gfuzan.common.config;
+package org.gfuzan.common.config.cors;
 
 import java.util.HashMap;
 import java.util.List;

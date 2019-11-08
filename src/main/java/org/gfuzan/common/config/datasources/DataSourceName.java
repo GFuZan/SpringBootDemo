@@ -1,4 +1,4 @@
-package org.gfuzan.common.datasources;
+package org.gfuzan.common.config.datasources;
 
 /**
  * 多数据源名

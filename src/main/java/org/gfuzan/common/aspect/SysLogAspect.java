@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class SysLogAspect {
     private Logger logger = LoggerFactory.getLogger(getClass());
     
-    private static final String packageName = "com.bhh.common"; 
+    private static final String packageName = "org.gfuzan.modules"; 
 
     @Pointcut("within("+packageName+"..*)")
     public void logPointCut() {
