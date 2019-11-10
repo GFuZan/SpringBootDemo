@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.gfuzan.common.result.RawResponse;
+import org.gfuzan.common.utils.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -20,6 +22,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 异常处理Controller
@@ -61,11 +66,20 @@ public class ExceptionController extends BasicErrorController {
 	@RequestMapping
 	public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
 		Map<String, Object> srcbody = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));
-		Map<String, Object> body = new HashMap<>();
 		HttpStatus status = getStatus(request);
 
-		body.put("errorCode", status.value());
-		body.put("errorMessage", srcbody.get("message"));
+		RawResponse<Object> res = new RawResponse<>();
+		res.setErrorCode(status.value());
+		res.setErrorMessage((String) srcbody.get("message"));
+		ObjectMapper objectMapper = CommonUtil.getObjectMapper();
+		Map<String, Object> body = new HashMap<>();
+		try {
+			body = objectMapper.readValue(objectMapper.writeValueAsBytes(res),new TypeReference<Map<String, Object>>() {});
+		} catch (Exception e) {
+			log.warn("转换错误消息失败!", e);
+			body = srcbody;
+		}
+
 		return new ResponseEntity<>(body, status);
 	}
 
