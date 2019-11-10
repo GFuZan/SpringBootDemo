@@ -26,11 +26,12 @@ import org.springframework.stereotype.Component;
 @Order(-1)
 @Component
 public class DataSourceAspect {
-	protected Logger logger = LoggerFactory.getLogger(getClass());
-	
+
+	private static final Logger log = LoggerFactory.getLogger(DataSourceAspect.class);
+
 	private static final String dataSourceAnnotationClassName = "org.gfuzan.common.config.datasources.annotation.DataSource";
 
-	@Pointcut("@annotation("+dataSourceAnnotationClassName+")")
+	@Pointcut("@annotation(" + dataSourceAnnotationClassName + ")")
 	public void dataSourcePointCut() {
 	}
 
@@ -43,13 +44,13 @@ public class DataSourceAspect {
 
 		DataSourceName dname = ds.value();
 		DynamicDataSource.setDataSource(dname.getName());
-		logger.debug("设置数据源: " + dname.getName());
+		log.debug("设置数据源: " + dname.getName());
 
 		try {
 			return point.proceed();
 		} finally {
 			String dataSourceName = DynamicDataSource.clearDataSource();
-			logger.debug("清理数据源: " + dataSourceName);
+			log.debug("清理数据源: " + dataSourceName);
 		}
 	}
 }

@@ -128,6 +128,7 @@ public class CommonUtil {
 	@PostConstruct
 	private void init() {
 		setSpringContext(springContext);
+		log.debug("设置 springContext");
 		try {
 			setObjectMapper(springContext.getBean(ObjectMapper.class));
 			log.debug("设置 ObjectMapper");

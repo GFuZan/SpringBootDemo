@@ -26,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ConditionalOnMissingBean(WebMvcConfigurer.class)
 public class CorsConfig {
 	
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private static final Logger log = LoggerFactory.getLogger(CorsConfig.class);
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer(Map<String, String> corsMappingConfig,Map<String, List<String>> corsAllowRuleConfig) {
@@ -43,7 +43,7 @@ public class CorsConfig {
 							if(corsAllowRuleList != null) {
 								corsAllowRuleList.forEach((e) -> {
 									registry.addMapping(map.getValue()).allowedOrigins(e);
-									logger.debug("跨域规则:  "+ e +" -> "+ map.getValue());
+									log.debug("跨域规则:  "+ e +" -> "+ map.getValue());
 								});
 							}
 							

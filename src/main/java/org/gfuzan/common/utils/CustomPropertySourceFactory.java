@@ -20,7 +20,7 @@ public class CustomPropertySourceFactory extends DefaultPropertySourceFactory {
 		// 获取配置文件名
 		String sourceName = name != null ? name : resource.getResource().getFilename();
 
-		if (resource.getResource().exists() && (sourceName.endsWith(".yml") || sourceName.endsWith(".yaml"))) {
+		if (sourceName.endsWith(".yml") || sourceName.endsWith(".yaml")) {
 			Properties propertiesFromYaml = loadYml(resource);
 			return new PropertiesPropertySource(sourceName, propertiesFromYaml);
 		} else {

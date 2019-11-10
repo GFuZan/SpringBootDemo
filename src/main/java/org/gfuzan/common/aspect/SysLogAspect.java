@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class SysLogAspect {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger log = LoggerFactory.getLogger(SysLogAspect.class);
     
     private static final String packageName = "org.gfuzan.modules"; 
 
@@ -35,13 +35,13 @@ public class SysLogAspect {
             return point.proceed();
         }
         try {
-            logger.info(signature + " start");
+            log.info(signature + " start");
             result = point.proceed();
         } catch (Throwable e) {
-            logger.error(signature + " error", e);
+            log.error(signature + " error", e);
             throw e;
         }finally {
-            logger.info(signature + " end");
+            log.info(signature + " end");
         }
 
         return result;

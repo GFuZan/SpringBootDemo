@@ -24,6 +24,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author GFuZan
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { RunApplication.class },webEnvironment=WebEnvironment.RANDOM_PORT)
 public class DemoApplicationTests {

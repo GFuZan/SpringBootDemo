@@ -10,6 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * @author GFuZan
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { RunApplication.class },webEnvironment=WebEnvironment.RANDOM_PORT)
 public class CommonUtilTest {

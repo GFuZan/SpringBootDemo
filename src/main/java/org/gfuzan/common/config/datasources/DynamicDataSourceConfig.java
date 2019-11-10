@@ -22,8 +22,8 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 @Configuration
 public class DynamicDataSourceConfig {
-	
-	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	private static final Logger log = LoggerFactory.getLogger(DynamicDataSourceConfig.class);
 
 	/**
 	 * 创建数据源配置bean
@@ -42,7 +42,7 @@ public class DynamicDataSourceConfig {
 		if(!dataSourceMap.isEmpty()) {
 			Set<String> keySet = dataSourceMap.keySet();
 			keySet.forEach((key)->{
-				logger.debug("找到数据源配置: "+ key);
+				log.debug("找到数据源配置: "+ key);
 			});
 		}
 		
