@@ -1,16 +1,14 @@
 package org.gfuzan.common.config.filter.requestwrapper;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -30,9 +28,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 
 		if (StringUtils.hasLength(this.getContentType()) && this.getContentType().toLowerCase().indexOf("json") >= 0) {
 			if (postBody == null) {
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				IOUtils.copy(super.getInputStream(), bos);
-				postBody = bos.toByteArray();
+				postBody = StreamUtils.copyToByteArray(super.getInputStream());
 			}
 
 			return new CustomServletInputStream(postBody);
@@ -47,23 +43,23 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	 */
 	private static class CustomServletInputStream extends ServletInputStream {
 
-		private final InputStream is;
+		private final ByteArrayInputStream inputStream;
 
 		CustomServletInputStream(byte[] postBody) {
 			if (postBody == null) {
 				postBody = new byte[0];
 			}
-			this.is = new ByteArrayInputStream(postBody);
+			this.inputStream = new ByteArrayInputStream(postBody);
 		}
 
 		@Override
 		public int read() throws IOException {
-			return is.read();
+			return inputStream.read();
 		}
 
 		@Override
 		public boolean isFinished() {
-			return false;
+			return inputStream.available() == 0 ? true : false;
 		}
 
 		@Override
