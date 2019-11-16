@@ -1,9 +1,20 @@
 package org.gfuzan.demo;
 
+import java.beans.Beans;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.gfuzan.RunApplication;
@@ -11,6 +22,8 @@ import org.gfuzan.modules.entity.User;
 import org.gfuzan.modules.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -19,6 +32,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.util.PropertyPlaceholderHelper;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.ResourceUtils;
+import org.springframework.util.SimpleIdGenerator;
+import org.springframework.util.SocketUtils;
+import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -196,6 +221,109 @@ public class DemoApplicationTests {
 		});
 		System.err.println(value);
 
+	}
+	
+	@Test
+	@SuppressWarnings("unused")
+	public void testSpringUtils() throws Exception {
+		
+		// Bean复制
+		{
+			User user = new User();
+			BeanUtils.copyProperties(new User("张三"), user);
+			System.out.println();
+		}
+		
+		// 反射工具
+		{
+			Field findField = ReflectionUtils.findField(User.class, "name");
+			System.out.println();
+		}
+		
+		// ant匹配工具
+		{
+			boolean match = new AntPathMatcher().match("/g/**/a", "/g/x/a");
+			System.out.println();
+		}
+		
+		// 断言
+		{
+			Assert.isNull(null,"啦啦啦");
+			System.out.println();
+		}
+		
+		// http请求资源类型
+		{
+			String value = MimeTypeUtils.APPLICATION_JSON_VALUE;
+			System.out.println();
+		}
+		
+		// 占位符替换
+		{
+			PropertyPlaceholderHelper helper = new PropertyPlaceholderHelper("#{", "}") ;
+			
+			Properties properties = new Properties();
+			properties.put("accountNo", "1008");
+			properties.put("money", "300");
+			String placeholders = helper.replacePlaceholders("【蚂蚁借呗】你的支付宝#{accountNo}将从余额、储蓄卡或余额宝自动还款#{money}元", properties );
+			System.out.println();
+		}
+		
+		// 资源工具
+		{
+			File file = ResourceUtils.getFile("classpath:application.yml");
+			byte[] byteArray = FileCopyUtils.copyToByteArray(file);
+			String text = new String(byteArray);
+			System.out.println();
+		}
+		
+		// ID生成器
+		{
+			SimpleIdGenerator simpleIdGenerator = new SimpleIdGenerator();
+			Long id = simpleIdGenerator.generateId().getLeastSignificantBits();
+			id = simpleIdGenerator.generateId().getLeastSignificantBits();
+			id = simpleIdGenerator.generateId().getLeastSignificantBits();
+			id = simpleIdGenerator.generateId().getLeastSignificantBits();
+			id = simpleIdGenerator.generateId().getLeastSignificantBits();
+			id = simpleIdGenerator.generateId().getLeastSignificantBits();
+			System.out.println();
+		}
+		
+		// 找到可用端口
+		{
+			SortedSet<Integer> tcpPorts = SocketUtils.findAvailableTcpPorts(3);
+			System.out.println();
+		}
+		
+		// 字符串工具
+		{
+			Set<String> set = StringUtils.commaDelimitedListToSet("a,b,c,d,e,f,g");
+			String delimitedString = StringUtils.arrayToCommaDelimitedString(set.toArray());
+			System.out.println();
+		}
+		
+		// 文件复制工具
+		{
+			File file = ResourceUtils.getFile("classpath:application.yml");
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(FileCopyUtils.copyToByteArray(file));
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			
+			FileCopyUtils.copy(inputStream, outputStream);
+		}
+		
+		// 输入输出流工具
+		{
+			File file = ResourceUtils.getFile("classpath:application.yml");
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(FileCopyUtils.copyToByteArray(file));
+			String string = StreamUtils.copyToString(inputStream,StandardCharsets.UTF_8);
+			System.out.println();
+		}
+		
+		// 集合工具
+		{
+			boolean empty = CollectionUtils.isEmpty(new ArrayList<>());
+			System.out.println();
+		}
 	}
 
 }
