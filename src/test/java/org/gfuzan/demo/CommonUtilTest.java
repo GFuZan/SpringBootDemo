@@ -2,6 +2,7 @@ package org.gfuzan.demo;
 
 import org.gfuzan.RunApplication;
 import org.gfuzan.common.utils.CommonUtil;
+import org.gfuzan.common.utils.CommonUtil.ObjectWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,13 +16,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { RunApplication.class },webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { RunApplication.class }, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CommonUtilTest {
 
 	ObjectMapper om = new ObjectMapper();
 
 	/**
 	 * 执行表达式-对象测试
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -31,9 +33,10 @@ public class CommonUtilTest {
 
 		System.out.println(res);
 	}
-	
+
 	/**
 	 * 执行表达式-对象测试
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -50,6 +53,7 @@ public class CommonUtilTest {
 
 	/**
 	 * 执行表达式-执行Java对象
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -69,10 +73,10 @@ public class CommonUtilTest {
 
 		System.out.println(res);
 	}
-	
-	
+
 	/**
 	 * 执行表达式-执行Spring bean
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -92,5 +96,61 @@ public class CommonUtilTest {
 		}
 
 		System.out.println(res);
+	}
+
+	/**
+	 * 线程安全性测试
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testExpression7() throws Exception {
+
+		String js = "var a = a ? a : 1 ; a++;";
+
+		{
+			ObjectWrapper<Integer> ow = new ObjectWrapper<>();
+			ow.setValue(0);
+			new Thread(() -> {
+				while (true) {
+					ow.setValue(ow.getValue() + 1);
+					Object result = CommonUtil.getExpressionResult(js);
+					System.out.println("执行次数: " + ow.getValue() + " [a = " + result + "]");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}
+		{
+			ObjectWrapper<Integer> ow = new ObjectWrapper<>();
+			ow.setValue(0);
+			new Thread(() -> {
+				while (true) {
+					ow.setValue(ow.getValue() + 1);
+					Object result = CommonUtil.getExpressionResult(js);
+					System.out.println("执行次数: " + ow.getValue() + " [a = " + result + "]");
+					try {
+						Thread.sleep(2000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}
+		
+		
+		while (true) {
+			try {
+				Thread.sleep(20000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.script.SimpleScriptContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ public class CommonUtil {
 	/**
 	 * 脚本执行器
 	 */
-	private static ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByExtension("js");
+	private final static ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByExtension("js");
 
 	private final static Logger log = LoggerFactory.getLogger(CommonUtil.class);
 
@@ -69,6 +70,7 @@ public class CommonUtil {
 	 */
 	public static Object getExpressionResult(String expression, boolean throwException) {
 		Object res = null;
+		scriptEngine.setContext(new SimpleScriptContext());
 		try {
 			res = scriptEngine.eval(expression);
 		} catch (ScriptException e) {
@@ -171,5 +173,92 @@ public class CommonUtil {
 	 */
 	public static ApplicationContext getSpringContext() {
 		return sSpringContext;
+	}
+	
+	public static class KeyValue<K,V>{
+		/**
+		 * 键
+		 */
+		private K key;
+		/**
+		 * 值
+		 */
+		private V value;
+		
+		public K getKey() {
+			return key;
+		}
+		
+		public void setKey(K key) {
+			this.key = key;
+		}
+		
+		public V getValue() {
+			return value;
+		}
+		
+		public void setValue(V value) {
+			this.value = value;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((key == null) ? 0 : key.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			@SuppressWarnings("rawtypes")
+			KeyValue other = (KeyValue) obj;
+			if (key == null) {
+				if (other.key != null)
+					return false;
+			} else if (!key.equals(other.key))
+				return false;
+			return true;
+		}
+	}
+
+	/**
+	 * 对象包装类
+	 * 
+	 * @author GFuZan
+	 *
+	 * @param <T> 包装类型
+	 */
+	public static class ObjectWrapper<T> {
+		/**
+		 * 值
+		 */
+		private T value;
+		/**
+		 * 状态
+		 */
+		private int status;
+
+		public T getValue() {
+			return value;
+		}
+
+		public void setValue(T value) {
+			this.value = value;
+		}
+
+		public int getStatus() {
+			return status;
+		}
+
+		public void setStatus(int status) {
+			this.status = status;
+		}
 	}
 }
