@@ -1,12 +1,9 @@
 package org.gfuzan.common.config;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.gfuzan.common.result.RawResponse;
 import org.gfuzan.common.utils.CommonUtil;
@@ -21,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,25 +38,25 @@ public class ExceptionController extends BasicErrorController {
 		super(new DefaultErrorAttributes(), serverProperties.getError());
 	}
 
-	@Override
-	@RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
-	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
-		String status = "415";
-		PrintWriter pw = null;
-		response.setContentType(MediaType.TEXT_HTML_VALUE);
-		response.setCharacterEncoding("UTF-8");
-		String page = "<html><title>${title}</title><body><h3>${status}</h3><h4>${msg}<h4></body></html>";
-		try {
-			pw = response.getWriter();
-			page = page.replace("${title}", "非法");
-			page = page.replace("${status}", status);
-			page = page.replace("${msg}", "连接被拒绝");
-			pw.println(page);
-		} catch (IOException e) {
-			log.error("IOException", new String[] { "response" }, e);
-		}
-		return null;
-	}
+//	@Override
+//	@RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
+//	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
+//		String status = "415";
+//		PrintWriter pw = null;
+//		response.setContentType(MediaType.TEXT_HTML_VALUE);
+//		response.setCharacterEncoding("UTF-8");
+//		String page = "<html><title>${title}</title><body><h3>${status}</h3><h4>${msg}<h4></body></html>";
+//		try {
+//			pw = response.getWriter();
+//			page = page.replace("${title}", "非法");
+//			page = page.replace("${status}", status);
+//			page = page.replace("${msg}", "连接被拒绝");
+//			pw.println(page);
+//		} catch (IOException e) {
+//			log.error("IOException", new String[] { "response" }, e);
+//		}
+//		return null;
+//	}
 
 	@Override
 	@RequestMapping
