@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class SysLogAspect {
-    private static final Logger log = LoggerFactory.getLogger(SysLogAspect.class);
+public class MethodExecuteAspect {
+    private static final Logger log = LoggerFactory.getLogger(MethodExecuteAspect.class);
     
     private static final String packageName = "org.gfuzan.modules"; 
 
