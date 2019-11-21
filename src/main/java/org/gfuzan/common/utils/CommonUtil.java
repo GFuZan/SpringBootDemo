@@ -16,6 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -114,7 +116,7 @@ public class CommonUtil {
 					if (param != null) {
 						msg.append("执行参数: ");
 						try {
-							msg.append(om.writeValueAsString(param));
+							msg.append(getObjectMapper().writeValueAsString(param));
 						} catch (Exception e1) {
 							msg.append(param);
 						}
@@ -147,6 +149,44 @@ public class CommonUtil {
 	private synchronized static void setObjectMapper(ObjectMapper objectMapper) {
 		om = objectMapper;
 	}
+	
+    /**
+     * 将对象转换为Json字符串
+     * 
+     * @param  obj
+     * @return     json字串
+     */
+    public static String toJSON(Object obj) {
+        try {
+            String json = getObjectMapper().writeValueAsString(obj);
+            return json;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * 获取对象
+     * <p><b>用法示例:</b><br/>
+     * <pre>
+     *      <b>JSON 转为Map</b>
+     *          Map< String,User > map =  getObject(json,new TypeReference< Map< String,User >>() {});
+     * 
+     *      <b>JSON 转为List</b>
+     *          List< User > list = getObject(json,new TypeReference< List< User >>() {});
+     * <pre>
+     * </p>
+     * @param json JSON字串
+     * @param valueTypeRef 返回值类型
+     * @return
+     */
+    public static <T> T getObject(String json,TypeReference<T> valueTypeRef) {
+        try {
+            return getObjectMapper().readValue(json, valueTypeRef);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	/**
 	 * 获取 ObjectMapper
