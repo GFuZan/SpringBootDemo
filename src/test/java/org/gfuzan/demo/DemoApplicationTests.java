@@ -15,6 +15,7 @@ import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
 
 import org.gfuzan.RunApplication;
+import org.gfuzan.common.utils.CommonUtil;
 import org.gfuzan.modules.entity.User;
 import org.gfuzan.modules.service.UserService;
 import org.junit.Test;
@@ -189,35 +190,30 @@ public class DemoApplicationTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void testJson() throws IOException {
-		ObjectMapper om = new ObjectMapper();
-		List<User> userList = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			userList.add(new User("张三" + i));
-		}
+	public void testJson(){
 
-		// toJSON
-		String jsonObject = om.writeValueAsString(userList.get(0));
-		System.err.println(jsonObject);
+        List<User> userList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            userList.add(new User("张三" + i));
+        }
 
-		// toJSON
-		String jsonObjectList = om.writeValueAsString(userList);
-		System.err.println(jsonObjectList);
+        // toJSON
+        String jsonObject = CommonUtil.toJSON(userList.get(0));
+        System.err.println(jsonObject);
 
-		// toObject
-		System.err.println(om.readValue(jsonObject, User.class));
+        // toJSON
+        String jsonObjectList = CommonUtil.toJSON(userList);
+        System.err.println(jsonObjectList);
 
-		// toObjectList 方法1(Map同理)
-		JavaType jt = om.getTypeFactory().constructParametricType(ArrayList.class, User.class);
-		List<User> value = om.readValue(jsonObjectList, jt);
-		System.err.println(value);
+        // toObject
+        System.err.println(CommonUtil.getObject(jsonObject, new TypeReference<User>() {
+        }));
 
-		// toObjectList 方法2(Map同理)
-		value = om.readValue(jsonObjectList, new TypeReference<ArrayList<User>>() {
-		});
-		System.err.println(value);
-
-	}
+        // toObjectList 方法
+        List<User> value = CommonUtil.getObject(jsonObjectList, new TypeReference<List<User>>() {
+        });
+        System.err.println(value);
+    }
 	
 	@Test
 	@SuppressWarnings("unused")

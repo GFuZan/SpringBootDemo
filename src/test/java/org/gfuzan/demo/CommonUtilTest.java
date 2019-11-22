@@ -1,14 +1,20 @@
 package org.gfuzan.demo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gfuzan.RunApplication;
 import org.gfuzan.common.utils.CommonUtil;
 import org.gfuzan.common.utils.CommonUtil.ObjectWrapper;
+import org.gfuzan.modules.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -153,4 +159,35 @@ public class CommonUtilTest {
 			}
 		}
 	}
+	
+	   /**
+     * 线程安全性测试
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testToJSONGetObject() {
+
+        List<User> userList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            userList.add(new User("张三" + i));
+        }
+
+        // toJSON
+        String jsonObject = CommonUtil.toJSON(userList.get(0));
+        System.err.println(jsonObject);
+
+        // toJSON
+        String jsonObjectList = CommonUtil.toJSON(userList);
+        System.err.println(jsonObjectList);
+
+        // toObject
+        System.err.println(CommonUtil.getObject(jsonObject, new TypeReference<User>() {
+        }));
+
+        // toObjectList 方法
+        List<User> value = CommonUtil.getObject(jsonObjectList, new TypeReference<List<User>>() {
+        });
+        System.err.println(value);
+    }
 }
