@@ -1,5 +1,7 @@
 package org.gfuzan.common.utils;
 
+import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.PostConstruct;
@@ -8,11 +10,13 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleScriptContext;
 
+import org.apache.commons.pool2.ObjectPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -45,13 +49,21 @@ public class CommonUtil {
 	 * JSON 工具
 	 */
 	private static ObjectMapper om = getObjectMapper();
+	
+	private final static Logger log = LoggerFactory.getLogger(CommonUtil.class);
 
 	/**
-	 * 脚本执行器
+	 * 脚本执行器对象池
 	 */
-	private final static ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByExtension("js");
-
-	private final static Logger log = LoggerFactory.getLogger(CommonUtil.class);
+	private final static ObjectPool<ScriptEngine> scriptEnginePool = ObjectPoolUtil.getObjectPool(() -> {
+		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByExtension("js");
+		log.debug("创建脚本执行器: {}",scriptEngine);
+		return scriptEngine;
+	}, (e) -> {
+		return true;
+	}, (e) -> {
+		log.debug("销毁脚本执行器: {}",e);
+	});
 
 	/**
 	 * 算数表达式执行工具
@@ -71,19 +83,20 @@ public class CommonUtil {
 	 * @return 执行结果
 	 */
 	public static Object getExpressionResult(String expression, boolean throwException) {
-		Object res = null;
-		scriptEngine.setContext(new SimpleScriptContext());
-		try {
-			res = scriptEngine.eval(expression);
-		} catch (ScriptException e) {
-			if (throwException) {
-				throw new RuntimeException(e);
-			} else {
-				log.error("执行异常! 表达式: " + expression, e);
+		return ObjectPoolUtil.excute(scriptEnginePool, (scriptEngine) -> {
+			Object res = null;
+			scriptEngine.setContext(new SimpleScriptContext());
+			try {
+				res = scriptEngine.eval(expression);
+			} catch (ScriptException e) {
+				if (throwException) {
+					throw new RuntimeException(e);
+				} else {
+					log.error("执行异常! 表达式: " + expression, e);
+				}
 			}
-		}
-
-		return res;
+			return res;
+		});
 	}
 
 	/**
