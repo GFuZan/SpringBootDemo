@@ -43,12 +43,14 @@ public class RunApplication extends SpringBootServletInitializer {
 	 * 设置自定义类加载器
 	 */
 	static {
-		CustomClassLoader customClassLoader = new CustomClassLoader();
 		URL[] urLs = getURLs();
-		for (URL url : urLs) {
-			customClassLoader.addURL(url);
+		if (urLs.length > 0) {
+			CustomClassLoader customClassLoader = new CustomClassLoader();
+			for (URL url : urLs) {
+				customClassLoader.addURL(url);
+			}
+			Thread.currentThread().setContextClassLoader(customClassLoader);
 		}
-		Thread.currentThread().setContextClassLoader(customClassLoader);
 	}
 
 	private static URL[] getURLs() {
