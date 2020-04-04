@@ -8,7 +8,8 @@ package org.gfuzan.common.config.datasources;
 public enum DataSourceName {
 	
 	FIRST("first",true),
-	SECOND("second");
+	SECOND("second"),
+	H2("h2");
 
 	/**
 	 * 数据源名

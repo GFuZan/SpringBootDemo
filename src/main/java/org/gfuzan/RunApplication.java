@@ -26,12 +26,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // 启用深度代理
 @EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
 // 加载外部配置
-@PropertySource(value = { "${location.datasource:}",
-						"${location.redis:}",
-						"${location.cache:}",
-						"${location.session:}",
-						"${location.cors:}" }, 
-	factory = CustomPropertySourceFactory.class, ignoreResourceNotFound = true)
+@PropertySource(value = { "${location.datasource:}", "${location.redis:}", "${location.cache:}", "${location.session:}",
+		"${location.cors:}" }, factory = CustomPropertySourceFactory.class, ignoreResourceNotFound = true)
 public class RunApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
@@ -48,11 +44,19 @@ public class RunApplication extends SpringBootServletInitializer {
 	 */
 	static {
 		CustomClassLoader customClassLoader = new CustomClassLoader();
-		URLClassLoader classLoader = (URLClassLoader) RunApplication.class.getClassLoader();
-		URL[] urLs = classLoader.getURLs();
+		URL[] urLs = getURLs();
 		for (URL url : urLs) {
 			customClassLoader.addURL(url);
 		}
 		Thread.currentThread().setContextClassLoader(customClassLoader);
+	}
+
+	private static URL[] getURLs() {
+		URL[] urLs = new URL[0];
+		ClassLoader appClassLoader = RunApplication.class.getClassLoader();
+		if (appClassLoader instanceof URLClassLoader) {
+			urLs = ((URLClassLoader) appClassLoader).getURLs();
+		}
+		return urLs;
 	}
 }

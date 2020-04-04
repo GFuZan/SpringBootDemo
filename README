@@ -1,3 +1,4 @@
+jdk 1.8
 集成 mybatis,thymeleaf,国际化,支持动态数据源
 
 运行
@@ -11,3 +12,9 @@
             在文件夹home下执行
                 nohup java -jar home/user/demo.jar --spring.profiles.active=prod
             需要将配置文件放在home/config中,而不是home/user/config.
+
+追加数据库
+    1. 在 datasource-${环境}.yml 中追加数据库配置
+    2. 在 DataSourceName.java 中追加数据库枚举
+    3. 使用
+        在service方法上加注解 @DataSource(DataSourceName.${新定义的枚举})

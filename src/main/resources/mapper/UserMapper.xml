@@ -1,16 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.gfuzan.modules.mapper.UserMapper">
     <resultMap type="org.gfuzan.modules.entity.User" id="userMap">
-        <result property="name" column="name"/>
-        <result property="age" column="age"/>
+        <result property="name" column="name" />
+        <result property="age" column="age" />
     </resultMap>
 
     <select id="getAllUser" resultMap="userMap">
         select * from user
     </select>
-    
+
     <update id="updateUser">
     	update `user` set age=age+1
     </update>
+
+    <!-- 创建用户表 -->
+    <update id="createUserTable">
+    	CREATE TABLE IF NOT EXISTS ${tableName}(
+            name VARCHAR(20),
+            age INT
+        )
+    </update>
+
+    <!-- 插入数据 -->
+    <insert id="insertUser">
+        INSERT INTO ${tableName}(name,age)
+        <foreach item="user" collection="userList" open="VALUES" separator=",">
+            (#{user.name},#{user.age})
+        </foreach>
+    </insert>
+
+    <!-- 检索 -->
+    <select id="sumAge" resultType="int">
+        select sum(age) from ${tableName}
+    </select>
+
+    <!-- 删除表 -->
+    <update id="dropUserTable">
+        DROP TABLE IF EXISTS ${tableName}
+    </update>
+
 </mapper>

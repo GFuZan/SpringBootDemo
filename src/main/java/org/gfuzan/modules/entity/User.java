@@ -59,4 +59,10 @@ public class User implements Serializable {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
+
+	public User(@NotNull(message = "name 不能为空") String name,
+			@Max(value = 170, message = "年龄验证失败") @Min(value = 0, message = "年龄验证失败") Integer age) {
+		this.name = name;
+		this.age = age;
+	}
 }

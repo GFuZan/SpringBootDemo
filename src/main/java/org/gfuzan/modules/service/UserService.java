@@ -22,5 +22,7 @@ public interface UserService {
 
 	List<User> getAllUserAll();
 
-	List<User> getAllUserPage(int pageNum);
+    List<User> getAllUserPage(int pageNum);
+    
+    int testH2(String tableName, List<User> userList);
 }

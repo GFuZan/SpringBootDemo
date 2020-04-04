@@ -35,18 +35,27 @@ public class UserServiceImpl implements UserService {
 		return um.getAllUser();
 	}
 
+	/**
+	 * 测试数据源1
+	 */
 	@Override
 	@DataSource(DataSourceName.FIRST)
 	public List<User> getAllUser1() {
 		return um.getAllUser();
 	}
 
+	/**
+	 * 测试数据源2
+	 */
 	@Override
 	@DataSource(DataSourceName.SECOND)
 	public List<User> getAllUser2() {
 		return um.getAllUser();
 	}
 	
+	/**
+	 * 测试缓存
+	 */
 	@Override
 	@Cacheable(cacheNames="AllUser")
 	public List<User> getAllUser() {
@@ -54,6 +63,9 @@ public class UserServiceImpl implements UserService {
 		return um.getAllUser();
 	}
 
+	/**
+	 * 测试清理缓存
+	 */
 	@Override
 	@CacheEvict(cacheNames="AllUser")
 	public int updateUser() {
@@ -63,12 +75,18 @@ public class UserServiceImpl implements UserService {
 	
 	
 
+	/**
+	 * 测试事务
+	 */
 	@Transactional(rollbackFor=Exception.class)
 	public int updateUserT() {
 		um.updateUser();
 		throw new NullPointerException();
 	}
 	
+	/**
+	 * 测试事务与数据源注解
+	 */
 	@Override
 	@DataSource(DataSourceName.FIRST)
 	@Transactional(rollbackFor=Exception.class)
@@ -77,6 +95,9 @@ public class UserServiceImpl implements UserService {
 		throw new NullPointerException();
 	}
 	
+	/**
+	 * 测试事务与数据源注解2
+	 */
 	@Override
 	@DataSource(DataSourceName.SECOND)
 	@Transactional(rollbackFor=Exception.class)
@@ -93,11 +114,25 @@ public class UserServiceImpl implements UserService {
 		System.out.println("执行定时任务, 执行时间:"+ LocalTime.now());
 	}
 	
+	/**
+	 * 测试分页
+	 */
 	@Override
 	@DataSource(DataSourceName.SECOND)
 	public List<User> getAllUserPage(int pageNum) {
 		PageHelper.startPage(pageNum, 1);
 		List<User> allUser = um.getAllUser();
 		return allUser;
+	}
+
+	@Override
+	@DataSource(DataSourceName.H2)
+	@Transactional(rollbackFor = Exception.class)
+	public int testH2(String tableName, List<User> userList) {
+		um.createUserTable(tableName);
+		um.insertUser(tableName, userList);
+		int age = um.sumAge(tableName);
+		um.dropUserTable(tableName);
+		return age;
 	}
 }

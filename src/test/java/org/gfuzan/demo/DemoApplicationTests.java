@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.gfuzan.RunApplication;
 import org.gfuzan.common.utils.CommonUtil;
@@ -42,10 +45,6 @@ import org.springframework.util.SocketUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * @author GFuZan
  *
@@ -56,6 +55,19 @@ public class DemoApplicationTests {
 
 	@Autowired
 	private UserService us;
+
+	/**
+	 * 测试h2数据库
+	 */
+	@Test
+	public void testH2() {
+		List<User> userList = new LinkedList<>();
+		for(int i=0; i<10000; i++){
+			userList.add(new User("name"+i,i));
+		}
+		int age = us.testH2("user", userList);
+		System.out.println(age);
+	}
 
 	/**
 	 * 多数据源测试
