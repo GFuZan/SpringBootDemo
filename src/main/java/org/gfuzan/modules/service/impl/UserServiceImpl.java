@@ -3,6 +3,7 @@ package org.gfuzan.modules.service.impl;
 import java.time.LocalTime;
 import java.util.List;
 
+import org.apache.ibatis.io.ResolverUtil.Test;
 import org.gfuzan.common.config.datasources.DataSourceName;
 import org.gfuzan.common.config.datasources.annotation.DataSource;
 import org.gfuzan.modules.entity.User;
@@ -12,8 +13,11 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
@@ -22,6 +26,12 @@ import com.github.pagehelper.PageHelper;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper um;
+
+	@Autowired
+	private DataSourceTransactionManager transactionManager;
+
+	@Autowired
+	private TransactionDefinition transactionDefinition;
 
 	@Override
 	@DataSource(DataSourceName.FIRST)
@@ -134,5 +144,21 @@ public class UserServiceImpl implements UserService {
 		int age = um.sumAge(tableName);
 		um.dropUserTable(tableName);
 		return age;
+	}
+
+	@Override
+	@DataSource(DataSourceName.H2)
+	public int testManualTransaction(String tableName){
+		int res = -1;
+		TransactionStatus transaction = transactionManager.getTransaction(transactionDefinition);
+		try {
+			um.dropUserTable(tableName);
+			res = um.createUserTable(tableName);
+			transactionManager.commit(transaction);
+		} catch (Exception e) {
+			transactionManager.rollback(transaction);
+			throw e;
+		}
+		return res;
 	}
 }

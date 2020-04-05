@@ -57,6 +57,17 @@ public class DemoApplicationTests {
 	private UserService us;
 
 	/**
+	 * 测试手动事务
+	 */
+	@Test
+	public void testManualTransaction() {
+		// 正常
+		us.testManualTransaction("tableName");
+		// 异常
+		us.testManualTransaction("table Name");
+	}
+
+	/**
 	 * 测试h2数据库
 	 */
 	@Test
