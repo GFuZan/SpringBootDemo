@@ -39,26 +39,26 @@ public class RunApplication extends SpringBootServletInitializer {
 		return builder.sources(RunApplication.class);
 	}
 
-	/**
-	 * 设置自定义类加载器
-	 */
-	static {
-		URL[] urLs = getURLs();
-		if (urLs.length > 0) {
-			CustomClassLoader customClassLoader = new CustomClassLoader();
-			for (URL url : urLs) {
-				customClassLoader.addURL(url);
-			}
-			Thread.currentThread().setContextClassLoader(customClassLoader);
-		}
-	}
+	// /**
+	//  * 设置自定义类加载器
+	//  */
+	// static {
+	// 	URL[] urLs = getURLs();
+	// 	if (urLs.length > 0) {
+	// 		CustomClassLoader customClassLoader = new CustomClassLoader();
+	// 		for (URL url : urLs) {
+	// 			customClassLoader.addURL(url);
+	// 		}
+	// 		Thread.currentThread().setContextClassLoader(customClassLoader);
+	// 	}
+	// }
 
-	private static URL[] getURLs() {
-		URL[] urLs = new URL[0];
-		ClassLoader appClassLoader = RunApplication.class.getClassLoader();
-		if (appClassLoader instanceof URLClassLoader) {
-			urLs = ((URLClassLoader) appClassLoader).getURLs();
-		}
-		return urLs;
-	}
+	// private static URL[] getURLs() {
+	// 	URL[] urLs = new URL[0];
+	// 	ClassLoader appClassLoader = RunApplication.class.getClassLoader();
+	// 	if (appClassLoader instanceof URLClassLoader) {
+	// 		urLs = ((URLClassLoader) appClassLoader).getURLs();
+	// 	}
+	// 	return urLs;
+	// }
 }
