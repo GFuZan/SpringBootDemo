@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import javax.validation.Valid;
 
-import org.gfuzan.modules.entity.User;
+import org.gfuzan.modules.dto.UserVo;
 import org.gfuzan.modules.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -83,7 +83,7 @@ public class TestController {
 	 */
 	@RequestMapping(path = { "testValid" }, method = RequestMethod.POST)
 	@ResponseBody
-	public String testValid(@RequestBody @Valid User user, BindingResult bindingResult) {
+	public String testValid(@RequestBody @Valid UserVo user, BindingResult bindingResult) {
 
 		StringBuilder sb = new StringBuilder();
 

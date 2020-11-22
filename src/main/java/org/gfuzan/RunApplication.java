@@ -1,9 +1,5 @@
 package org.gfuzan;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
-import org.gfuzan.common.classloader.CustomClassLoader;
 import org.gfuzan.common.utils.CustomPropertySourceFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

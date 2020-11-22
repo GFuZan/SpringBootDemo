@@ -2,15 +2,15 @@ package org.gfuzan.modules.service;
 
 import java.util.List;
 
-import org.gfuzan.modules.entity.User;
+import org.gfuzan.modules.dto.UserVo;
 
 public interface UserService {
 
-    public List<User> getAllUser();
+    public List<UserVo> getAllUser();
     
-    public List<User> getAllUser1();
+    public List<UserVo> getAllUser1();
     
-    public List<User> getAllUser2();
+    public List<UserVo> getAllUser2();
     
     public int updateUser();
     
@@ -20,11 +20,11 @@ public interface UserService {
     
     public int updateUserT2();
 
-	List<User> getAllUserAll();
+	List<UserVo> getAllUserAll();
 
-    List<User> getAllUserPage(int pageNum);
+    List<UserVo> getAllUserPage(int pageNum);
     
-    int testH2(String tableName, List<User> userList);
+    int testH2(String tableName, List<UserVo> userList);
 
     int testManualTransaction(String tableName);
 }

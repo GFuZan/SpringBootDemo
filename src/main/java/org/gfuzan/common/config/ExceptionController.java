@@ -5,12 +5,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.gfuzan.common.result.RawResponse;
 import org.gfuzan.common.utils.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
@@ -19,18 +24,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * 异常处理Controller
  * 
- * @author gaofz
+ * @author gfuzan
  *
  */
 @Controller
 @ConditionalOnWebApplication
 public class ExceptionController extends BasicErrorController {
+
+	@Autowired
+	private ServerProperties serverProperties;
+
+	@Autowired
+	private WebMvcProperties webMvcProperties;
 
 	private static final Logger log = LoggerFactory.getLogger(ExceptionController.class);
 
@@ -67,6 +75,9 @@ public class ExceptionController extends BasicErrorController {
 		RawResponse<Object> res = new RawResponse<>();
 		res.setErrorCode(status.value());
 		res.setErrorMessage((String) srcbody.get("message"));
+		if (res.getErrorCode() == 404) {
+			res.addOtherField("rootPath", serverProperties.getServlet().getContextPath() + webMvcProperties.getServlet().getPath());
+		}
 		ObjectMapper objectMapper = CommonUtil.getObjectMapper();
 		Map<String, Object> body = new HashMap<>();
 		try {

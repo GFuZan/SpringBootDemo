@@ -3,10 +3,12 @@ package org.gfuzan.modules.service.impl;
 import java.time.LocalTime;
 import java.util.List;
 
-import org.apache.ibatis.io.ResolverUtil.Test;
+import com.github.pagehelper.PageHelper;
+
 import org.gfuzan.common.config.datasources.DataSourceName;
 import org.gfuzan.common.config.datasources.annotation.DataSource;
-import org.gfuzan.modules.entity.User;
+import org.gfuzan.modules.convert.UserConvertMapper;
+import org.gfuzan.modules.dto.UserVo;
 import org.gfuzan.modules.mapper.UserMapper;
 import org.gfuzan.modules.service.UserService;
 import org.springframework.aop.framework.AopContext;
@@ -20,12 +22,13 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.PageHelper;
-
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper um;
+
+	@Autowired
+	private UserConvertMapper ucm;
 
 	@Autowired
 	private DataSourceTransactionManager transactionManager;
@@ -35,14 +38,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@DataSource(DataSourceName.FIRST)
-	public List<User> getAllUserAll() {
+	public List<UserVo> getAllUserAll() {
 		
 		((UserService)AopContext.currentProxy()).getAllUser1();
 		((UserService)AopContext.currentProxy()).getAllUser2();
 		((UserService)AopContext.currentProxy()).getAllUser2();
 		((UserService)AopContext.currentProxy()).getAllUser1();
 		
-		return um.getAllUser();
+		return ucm.toDto(um.getAllUser());
 	}
 
 	/**
@@ -50,8 +53,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@DataSource(DataSourceName.FIRST)
-	public List<User> getAllUser1() {
-		return um.getAllUser();
+	public List<UserVo> getAllUser1() {
+		return ucm.toDto(um.getAllUser());
 	}
 
 	/**
@@ -59,8 +62,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@DataSource(DataSourceName.SECOND)
-	public List<User> getAllUser2() {
-		return um.getAllUser();
+	public List<UserVo> getAllUser2() {
+		return ucm.toDto(um.getAllUser());
 	}
 	
 	/**
@@ -68,9 +71,9 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Cacheable(cacheNames="AllUser")
-	public List<User> getAllUser() {
+	public List<UserVo> getAllUser() {
 		System.err.println("getAllUser");
-		return um.getAllUser();
+		return ucm.toDto(um.getAllUser());
 	}
 
 	/**
@@ -129,18 +132,18 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@DataSource(DataSourceName.SECOND)
-	public List<User> getAllUserPage(int pageNum) {
+	public List<UserVo> getAllUserPage(int pageNum) {
 		PageHelper.startPage(pageNum, 1);
-		List<User> allUser = um.getAllUser();
+		List<UserVo> allUser = ucm.toDto(um.getAllUser());
 		return allUser;
 	}
 
 	@Override
 	@DataSource(DataSourceName.H2)
 	@Transactional(rollbackFor = Exception.class)
-	public int testH2(String tableName, List<User> userList) {
+	public int testH2(String tableName, List<UserVo> userList) {
 		um.createUserTable(tableName);
-		um.insertUser(tableName, userList);
+		um.insertUser(tableName, ucm.toEntity(userList));
 		int age = um.sumAge(tableName);
 		um.dropUserTable(tableName);
 		return age;

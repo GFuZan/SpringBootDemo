@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.gfuzan.RunApplication;
 import org.gfuzan.common.utils.CommonUtil;
+import org.gfuzan.modules.dto.UserVo;
 import org.gfuzan.modules.entity.User;
 import org.gfuzan.modules.service.UserService;
 import org.junit.Test;
@@ -64,7 +65,11 @@ public class DemoApplicationTests {
 		// 正常
 		us.testManualTransaction("tableName");
 		// 异常
-		us.testManualTransaction("table Name");
+		try {
+			us.testManualTransaction("table Name");
+		} catch (RuntimeException e) {
+			System.out.println("操作回滚了");
+		}
 	}
 
 	/**
@@ -72,9 +77,9 @@ public class DemoApplicationTests {
 	 */
 	@Test
 	public void testH2() {
-		List<User> userList = new LinkedList<>();
+		List<UserVo> userList = new LinkedList<>();
 		for(int i=0; i<10000; i++){
-			userList.add(new User("name"+i,i));
+			userList.add(new UserVo("name"+i,i));
 		}
 		int age = us.testH2("user", userList);
 		System.out.println(age);
@@ -145,7 +150,7 @@ public class DemoApplicationTests {
 	 */
 	@Test
 	public void testPage() {
-		List<User> allUserPage = us.getAllUserPage(-1);
+		List<UserVo> allUserPage = us.getAllUserPage(-1);
 		
 		allUserPage = us.getAllUserPage(1);
 		
@@ -166,6 +171,7 @@ public class DemoApplicationTests {
 	 * Redis测试
 	 */
 	@Test
+	@SuppressWarnings("all")
 	public void redisTest() {
 		Boolean delete = rt.delete("testKey");
 		System.out.println("删除成功: "+ delete);
