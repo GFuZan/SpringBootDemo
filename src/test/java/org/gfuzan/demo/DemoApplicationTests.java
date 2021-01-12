@@ -15,13 +15,17 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.gfuzan.RunApplication;
 import org.gfuzan.common.utils.CommonUtil;
+import org.gfuzan.demo.DemoApplicationTests.TestAction;
 import org.gfuzan.modules.dto.UserVo;
+import org.gfuzan.modules.entity.BaseData;
 import org.gfuzan.modules.entity.User;
 import org.gfuzan.modules.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +36,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -45,14 +56,63 @@ import org.springframework.util.SimpleIdGenerator;
 import org.springframework.util.SocketUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
 
 /**
  * @author GFuZan
  *
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { RunApplication.class },webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = { RunApplication.class, TestAction.class },webEnvironment=WebEnvironment.RANDOM_PORT)
 public class DemoApplicationTests {
+
+	@Autowired
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
+
+	@Before
+	public void setUp() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
+
+	/**
+	 * 测试示例
+	 * 
+	 * @throws Exception
+	 * @throws JsonProcessingException
+	 */
+	@Test
+	public void test_001() throws Exception {
+		MvcResult andReturn = mockMvc
+				.perform(MockMvcRequestBuilders.post("/testAction/testBaseData")
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.key1").value("value1")).andReturn();
+		System.out.println(andReturn);
+	}
+
+	@Controller
+	@RequestMapping("/testAction")
+	public static class TestAction {
+		@RequestMapping(value = "testBaseData", method = RequestMethod.POST)
+		public @ResponseBody BaseData testBaseData() {
+			BaseData bdv = new BaseData() {
+
+				/**
+				 * serialVersionUID
+				 */
+				private static final long serialVersionUID = 1112312312L;
+			};
+			bdv.setBaseDataOtherDataKey("key1", "value1");
+			bdv.setBaseDataOtherDataKey("key2", "value2");
+			return bdv;
+		}
+	}
+
 
 	@Autowired
 	private UserService us;
